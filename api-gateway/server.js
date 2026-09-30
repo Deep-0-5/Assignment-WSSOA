@@ -9,7 +9,6 @@ const PORT = config.PORT;
 
 app.use(cors());
 
-// Request logging format
 morgan.token("target-service", (req) => req._targetService || "Gateway");
 app.use(
   morgan(
@@ -17,7 +16,6 @@ app.use(
   )
 );
 
-// GET /health - Gateway health-check reporting dynamic routing table
 app.get("/health", (req, res) => {
   const routesSummary = {};
   config.services.forEach((service) => {
@@ -57,6 +55,7 @@ function createServiceProxy(service) {
   return createProxyMiddleware({
     target: service.url,
     changeOrigin: true,
+    // http-proxy-middleware v3 event handlers
     on: {
       proxyReq: (proxyReq, req, res) => {
         req._targetService = service.name;
@@ -86,6 +85,7 @@ function createServiceProxy(service) {
         }
       },
     },
+    // Fallback for v2 compatibility
     onError: (err, req, res) => {
       console.error(
         `[Gateway Proxy Error - Fallback] Unreachable: ${service.name} (${service.url})`
