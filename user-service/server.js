@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // USER SERVICE - Entry Point
 // Independently runnable microservice for
 // managing User resources.
@@ -13,8 +13,8 @@ const cors = require("cors");
 const userController = require("./controllers/userController");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/userdb";
+const DEFAULT_ATLAS_URI = "mongodb+srv://deepboghara6_db_user:k2g2wHxwZtQSzzdL@cluster0.6met6bi.mongodb.net/userdb?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URL || DEFAULT_ATLAS_URI;
 
 // ============================================
 // MIDDLEWARE
