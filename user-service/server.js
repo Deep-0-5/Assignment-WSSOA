@@ -16,6 +16,11 @@ const app = express();
 const DEFAULT_ATLAS_URI = "mongodb+srv://deepboghara6_db_user:k2g2wHxwZtQSzzdL@cluster0.6met6bi.mongodb.net/userdb?retryWrites=true&w=majority&appName=Cluster0";
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URL || DEFAULT_ATLAS_URI;
 
+console.log("\n===========================================");
+console.log("  USER SERVICE v2.0 STARTING");
+console.log("  Target DB:", MONGODB_URI.startsWith("mongodb+srv") ? "MongoDB Atlas Cluster" : MONGODB_URI);
+console.log("===========================================\n");
+
 // ============================================
 // MIDDLEWARE
 // ============================================
