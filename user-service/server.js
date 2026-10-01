@@ -33,7 +33,7 @@ app.use(express.json());
 // ============================================
 
 // Health check / welcome route
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
     service: "User Service",
@@ -44,8 +44,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Connect user controller to /users route
+// Connect user controller to both / and /users routes
 app.use("/users", userController);
+app.use("/", userController);
 
 // ============================================
 // GLOBAL ERROR HANDLER
