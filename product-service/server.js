@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // PRODUCT SERVICE - Entry Point
 // Independently runnable microservice for
 // managing Product resources.
@@ -14,7 +14,8 @@ const productController = require("./controllers/productController");
 
 const app = express();
 const PORT = process.env.PORT || 3002;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/productdb";
+const DEFAULT_ATLAS_URI = "mongodb+srv://deepboghara6_db_user:k2g2wHxwZtQSzzdL@cluster0.6met6bi.mongodb.net/productdb?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URL || DEFAULT_ATLAS_URI;
 
 // ============================================
 // MIDDLEWARE
@@ -27,7 +28,7 @@ app.use(express.json());
 // ============================================
 
 // Health check / welcome route
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
     service: "Product Service",
@@ -38,8 +39,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Connect product controller to /products route
+// Connect product controller to both / and /products routes
 app.use("/products", productController);
+app.use("/", productController);
 
 // ============================================
 // GLOBAL ERROR HANDLER

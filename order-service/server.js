@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // ORDER SERVICE - Entry Point
 // Independently runnable microservice for
 // managing Order resources.
@@ -14,7 +14,8 @@ const orderController = require("./controllers/orderController");
 
 const app = express();
 const PORT = process.env.PORT || 3003;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/orderdb";
+const DEFAULT_ATLAS_URI = "mongodb+srv://deepboghara6_db_user:k2g2wHxwZtQSzzdL@cluster0.6met6bi.mongodb.net/orderdb?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URL || DEFAULT_ATLAS_URI;
 
 // ============================================
 // MIDDLEWARE
@@ -27,13 +28,13 @@ app.use(express.json());
 // ============================================
 
 // Health check / welcome route
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
     service: "Order Service",
     message: "Order Service is running",
     dependencies: {
-      userServiceUrl: process.env.USER_SERVICE_URL || "http://localhost:3001",
+      userServiceUrl: process.env.USER_SERVICE_URL || "https://user-service-production-89da.up.railway.app",
       productServiceUrl: process.env.PRODUCT_SERVICE_URL || "http://localhost:3002",
     },
     endpoints: {
@@ -42,8 +43,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Connect order controller to /orders route
+// Connect order controller to both / and /orders routes
 app.use("/orders", orderController);
+app.use("/", orderController);
 
 // ============================================
 // GLOBAL ERROR HANDLER
