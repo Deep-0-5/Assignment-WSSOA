@@ -17,3 +17,7 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Screenshots & submission media
+screenshots/
+
